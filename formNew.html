@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <title>Check Range</title>
+
+    <style>
+        .tooltip {
+            position: relative;
+        }
+        
+        .tooltiptext {
+            display: none;
+            /* visibility: hidden; */
+            width: 100%;
+            background-color: #e2dcdc;
+            color: steelblue;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 5px;
+            /* Position the tooltip */
+            /* position: absolute; */
+            z-index: 100;
+        }
+        /* .tooltip:hover .tooltiptext {
+            visibility: visible;
+        } */
+    </style>
+</head>
+
+<body>
+    <br>
+    <div class="ui placeholder  segment container">
+        <br>
+        <div class="ui one column very relaxed stackable grid">
+            <div class="column">
+                <form id="myForm" novalidate>
+                    <div class="ui form">
+                        <div class="field">
+                            <h4>Sample Form</h4>
+                        </div>
+                        <div class="input-field field tooltip">
+                            <label for="firstName">First Name</label>
+                            <input type="text" name="First Name" id="firstName" value="" onfocusout="validateFirstName()" />
+                            <span class="helper-text"></span>
+
+                            <span class="tooltiptext">Tooltip text</span>
+
+
+                        </div>
+
+                        <div class="input-field field tooltip">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" name="Last Name" id="lastName" value="" onfocusout="validateLastName()" />
+                            <span class="helper-text"></span>
+                            <span class="tooltiptext">Tooltip text</span>
+
+
+                        </div>
+
+                        <div class="input-field field tooltip">
+                            <label for="password">Password</label>
+                            <input type="password" name="Password" id="password" value="" onfocusout="validatePassword()" />
+                            <span class="helper-text"></span>
+                            <span class="tooltiptext">Tooltip text</span>
+
+                        </div>
+
+                        <div class="input-field field tooltip">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" name="Confirm Password" id="confirmPassword" onfocusout="validateConfirmPassword()" />
+                            <span class="helper-text"></span>
+                            <span class="tooltiptext">Tooltip text</span>
+
+
+                        </div>
+
+                        <div class="input-field field tooltip">
+                            <label for="email">Email</label>
+                            <input type="email" name="Email" id="email" onfocusout="validateEmail()" />
+                            <span class="helper-text"></span>
+                            <span class="tooltiptext">Tooltip text</span>
+
+                        </div>
+
+                        <div class="field">
+                            <label>Delete this later</label>
+                            <div class="ui left icon">
+                                <div>
+                                    <h3 id="resultId" class="resultClass spanClass" style="display: inline;" type="number;" placeholder="Result"></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui blue submit button convertBtnClass" id="submitNow">Enter</div>
+                        <br>
+                        <div style="text-align: center">
+                            <a href="index.html">Back to Home Page</a>
+                        </div>
+                        <br>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        console.dir(document.getElementById("firstName"))
+        let resultSan = document.querySelector("#resultId")
+
+
+        // Input fields
+        const firstName = document.getElementById('firstName');
+        const lastName = document.getElementById('lastName');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const email = document.getElementById('email');
+        // Form
+        const form = document.getElementById('myForm');
+        // Validation colors
+        const green = '#4CAF50';
+        const red = '#F44336';
+
+        function validateFirstName() {
+            //check if empty
+            console.log("hello")
+            if (checkIfEmpty(firstName)) {
+                return;
+            }
+
+            if (!checkIfOnlyLetters(firstName)) {
+                return;
+            } else {
+                return true;
+            }
+        }
+
+
+        function checkIfEmpty(field) {
+
+            // if(field.value.trim() === "") {
+            //     setInvalid(field, (field.name + "must not be empty"));
+
+            // } else {
+            //     //do something
+            // }
+
+            //remove white spaces because spaces also means the field is empty
+            if (isEmpty(field.value.trim())) {
+                //setfield invalid
+                //if the the value is empty
+                setInvalid(field, (field.name + " must not be empty"));
+                return true;
+            } else {
+                setValid(field)
+                return false;
+            }
+        }
+
+        function isEmpty(value) {
+            if (value === "") {
+                return true;
+            }
+            return false;
+        }
+
+        function setInvalid(field, message) {
+            // field.className = 'invalid';
+            // field.className = 'tooltiptext tooltipshow';
+
+            // field.nextElementSibling.textContent = message;
+            // field.nextElementSibling.style.color = "red";
+
+            field.nextElementSibling.nextElementSibling.innerHTML = message;
+            field.nextElementSibling.nextElementSibling.style.display = "block";
+
+        };
+
+        function setValid(field, message) {
+            // field.className = 'invalid';
+            // field.className = 'tooltiptext tooltipshow';
+
+            // field.nextElementSibling.innerHTML = message;
+            // field.nextElementSibling.style.color = "red";
+
+            field.nextElementSibling.nextElementSibling.innerHTML = message;
+            field.nextElementSibling.nextElementSibling.style.display = "none";
+        };
+
+        function checkIfOnlyLetters(field) {
+            //use regex 
+            if (/^[a-zA-Z]+$/.test(field.value)) {
+                setValid(field);
+                return true;
+            } else {
+                setInvalid(field, (field.name + "must contain only letters"));
+                return false;
+            }
+
+        }
+
+
+
+        // Handle form
+        form.addEventListener('submit', function(event) {
+            // Prevent default behaviour
+            event.preventDefault();
+            if (
+                validateFirstName() &&
+                validateLastName() &&
+                validatePassword() &&
+                validateConfirmPassword() &&
+                validateEmail()
+            ) {
+                const name = firstName.value;
+                const container = document.querySelector('div.container');
+                const loader = document.createElement('div');
+                loader.className = 'progress';
+                const loadingBar = document.createElement('div');
+                loadingBar.className = 'indeterminate';
+                loader.appendChild(loadingBar);
+                container.appendChild(loader);
+                setTimeout(function() {
+                    const loaderDiv = document.querySelector('div.progress');
+                    const panel = document.createElement('div');
+                    panel.className = 'card-panel green';
+                    const text = document.createElement('span');
+                    text.className = 'white-text';
+                    text.appendChild(
+                        document.createTextNode(
+                            `Sign up successful, welcom to SocialApe ${name}`
+                        )
+                    );
+                    panel.appendChild(text);
+                    container.replaceChild(panel, loaderDiv);
+                }, 1000);
+            }
+        });
+
+
+        //========================================================================
+        //========================================================================
+        //========================================================================
+        //========================================================================
+        let submitBtn = document.getElementById("submitNow");
+
+        firstName.addEventListener("keyup", enterFunction);
+        lastName.addEventListener("keyup", enterFunction);
+        password.addEventListener("keyup", enterFunction);
+        confirmPassword.addEventListener("keyup", enterFunction);
+        email.addEventListener("keyup", enterFunction);
+
+
+        submitBtn.addEventListener("keyup", enterFunction);
+        submitBtn.addEventListener("click", myFunction);
+
+        function myFunction(inputFieldVal1, inputFieldVal2, inputFieldVal3) {
+            inputFieldFirstNameVal = inputFieldForFirstName.value;
+            inputFieldLastNameVal = inputFieldForlastName.value;
+            inputFieldPasswordVal = inputFieldForPassword.value;
+            inputFieldConfirmPasswordVal = inputFieldForConfirmPassword.value;
+            inputFieldEmailVal = inputFieldForEmail.value;
+
+
+
+            let in1;
+            let in2;
+            let in3;
+            let in4;
+            let in5;
+            let message;
+            let answer;
+
+            if ((isNaN(inputFieldVal1) || inputFieldVal1 === "" || inputFieldVal1 <= 0) || (isNaN(inputFieldVal2) || inputFieldVal2 === "" || inputFieldVal2 <= 0) || (isNaN(inputFieldVal3) || inputFieldVal3 === "" || inputFieldVal3 <= 0)) {
+                message = " Enter a Number & Complete the Fields"
+                resultSpan.textContent = "\t" + message;
+            } else {
+                in1 = inputFieldFirstNameVal;
+                in2 = inputFieldLastNameVal;
+                in3 = inputFieldPasswordVal;
+                in4 = inputFieldConfirmPasswordVal;
+                in5 = inputFieldEmailVal;
+
+                answer = "True";
+
+                resultSpan.textContent = answer;
+            }
+        }
+
+
+        function enterFunction(event) {
+            if (event.which === 13) {
+                submitBtn.click();
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>
